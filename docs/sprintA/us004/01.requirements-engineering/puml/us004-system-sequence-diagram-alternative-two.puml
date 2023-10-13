@@ -1,0 +1,26 @@
+@startuml US004
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title US004 - Vote on a post - System Sequence Diagram
+
+autonumber
+
+actor "User" as Employee
+participant "DDD Forum Website" as System
+
+activate Employee
+
+
+        Employee -> System : upvotes on the post
+    activate System
+
+        System --> Employee : returns the updated vote count
+   deactivate System
+
+        Employee -> System : voids the vote
+    activate System
+
+    System --> Employee : returns the updated vote count
+    deactivate System

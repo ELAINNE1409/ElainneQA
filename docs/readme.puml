@@ -1,0 +1,109 @@
+@startuml # Switch-QA Project for the 1st Semester 2023
+
+## How to generate the svg files
+
+These templates use [PlantUML](https://plantuml.com) to generate the diagrams that are displayed in the readme. You may use any tool you choose.
+
+If you want to use PlantUML, on project root folder, run the following script:
+
+Remarks: it works for Linux and MacOS. For Windows, you have to adapt the script.
+
+```shell
+$ bin/generate-plantuml-diagrams.sh
+```
+
+
+## 1. Team Members
+
+The team consists of students identified in the following table.
+
+| Student Number | Name                                     |
+|----------------|------------------------------------------|
+| **1222630**    | Ana Filipa Matos Esteves                 |
+| **1222626**    | Beatriz Maria Ramos Neves                |
+| **1222629**    | Elainne Cristina Ferreira da Silva       |
+| **1222631**    | Francisco da Silva Pereira               |
+| **1222632**    | Henrique Ivan Kamburov da Silva          |
+| **1222641**    | Patrícia de Campos Paiva Peres           |
+| **1192148**    | Sara Rute Pereira Leite Segadães da Silva|
+
+## 2. Task Distribution
+
+Throughout the project's development period, the distribution of _tasks / requirements / features_ by the team members
+was carried out as described in the following table.
+
+**Keep this table must always up-to-date.**
+
+| Task                                 | [Sprint A](sprintA/readme.md)                                                                  | [Sprint B](sprintB/readme.md)                                                              |
+|--------------------------------------|------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
+| Architecture                         | [all](sprintA/global-artifacts/00.architecture/architecture.md)                                |                                                                                            |
+| Glossary                             | [all](sprintA/global-artifacts/01.requirements-engineering/glossary.md)                        |                                                                                            |
+| Use Case Diagram (UCD)               | [all](sprintA/global-artifacts/01.requirements-engineering/use-case-diagram.md)                |                                                                                            |
+| Supplementary Specification          | [all](sprintA/global-artifacts/01.requirements-engineering/supplementary-specification.md)     |                                                                                            |
+| US 001 (Sort the posts)              | [1222632 - Henrique ](sprintA/us001/01.requirements-engineering/readme.md)                     |                                                                                            |
+| US 002 (Create an account)           | [1222626 - Beatriz  ](sprintA/us002/01.requirements-engineering/readme.md)                     |                                                                                            |
+| US 003 (Create a post)               | [1222641 - Patricia ](sprintA/us003/01.requirements-engineering/readme.md)                     |                                                                                            |
+| US 004 (Vote on a post)              | [1222629 - Elainne  ](sprintA/us004/01.requirements-engineering/readme.md)                     |                                                                                            |
+| US 005 (Vote on a comment)           | [1222630 - Filipa   ](sprintA/us005/01.requirements-engineering/readme.md)                     |                                                                                            |
+| US 006 (Comment on a post)           | [1222641 - Patricia ](sprintA/us006/01.requirements-engineering/readme.md)                     |                                                                                            |
+| US 007 (Reply to a comment)          | [1222632 - Henrique ](sprintA/us007/01.requirements-engineering/readme.md)                     |                                                                                            |
+| US 008 (View post )                  | [1192148 - Sara     ](sprintA/us008/01.requirements-engineering/readme.md)                     |                                                                                            |
+| US 009 (Check account details)       | [1192148 - Sara     ](sprintA/us009/01.requirements-engineering/readme.md)                     |                                                                                            |
+| US 010 (Perform a login)             | [1222626 - Beatriz  ](sprintA/us010/01.requirements-engineering/readme.md)                     |                                                                                            |
+| US 011 (Perform a logout)            | [1222631 - Francisco][1222630 - Filipa ](sprintA/us011/01.requirements-engineering/readme.md)  |                                                                                            |
+| Create User                          | ...                                                                                            | [1222626 - Beatriz  ](sprintB/api/user/create_user.md)                                     |
+| Login                                | ...                                                                                            | [all](sprintB/api/user/login.md)                                                           |
+| Logout                               | ...                                                                                            | [1222629 - Elainne  ](sprintB/api/user/logout.md)                                          |
+| Get Current User                     | ...                                                                                            | [1222631 - Francisco](sprintB/api/user/me.md)                                              |
+| Delete User                          | ...                                                                                            | [1192148 - Sara     ](sprintB/api/user/userId.md)                                          |
+| Get User by Username                 | ...                                                                                            | [1222631 - Francisco](sprintB/api/user/username.md)                                        |
+| Token Refresh                        | ...                                                                                            | [1222626 - Beatriz  ](sprintB/api/user/token_refresh.md)                                   |
+| Member Username                      | ...                                                                                            | [1222632 - Henrique ](sprintB/api/member/username.md)                                      |
+| Member Me                            | ...                                                                                            | [1222632 - Henrique ]()                                                                    |
+| Create Post                          | ...                                                                                            | [1192148 - Sara     ](sprintB/api/posts/create_post.md)                                    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+| Get Recent Posts                     | ...                                                                                            | [1222632 - Henrique ](sprintB/api/posts/recent.md)                                         |                                                                                                                                                                                                                                                                                                                                                                                                                                         
+| Get Popular Posts                    | ...                                                                                            | [1222641 - Patricia ](sprintB/api/posts/popular.md)                                        |                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Upvote a post                        | ...                                                                                            | [1222641 - Patricia ](sprintB/api/posts/upvote.md)                                         |                                                                                                                                                                                                                                                                                                                                              
+| Downvote a post                      | ...                                                                                            | [1222641 - Patricia ](sprintB/api/posts/downvote.md)                                       |                                                                                                                                                                                                                                                                                                                                                                                                                                       
+| Get posts by post Id                 | ...                                                                                            | [1192148 - Sara     ](sprintB/api/posts/post_Id.md)                                        |
+| Reply to a post                      | ...                                                                                            | [1222630 - Filipa   ](sprintB/api/comments/post_reply.md)                                  |
+| Reply to a comment                   | ...                                                                                            | [1222626 - Beatriz  ](sprintB/api/comments/commentId/reply.md)                             |
+| Get comments by post slug            | ...                                                                                            | [1222630 - Filipa   ](sprintB/api/comments/comment_by_post_slug.md)                        |
+| Get comments by comment id           | ...                                                                                            | [1222630 - Filipa   ](sprintB/api/comments/comment_by_commentId.md)                        |
+| Upvote a comment                     | ...                                                                                            | [1222629 - Elainne  ](sprintB/api/comments/commentId/upvote.md)                            |
+| Downvote a comment                   | ...                                                                                            | [1222629 - Elainne  ](sprintB/api/comments/commentId/downvote.md)                          |
+
+
+
+## 3. Sprints
+
+**Project:** DDD Forum ISEP
+
+### 3.1 Sprint A
+
+**Goal:** To produce the specification of the existing version of the system
+
+**User Story:** As a project manager, I want the team to produce the specification of the existing version of the system
+
+The specificcation should follow the templates, as presented here and in the referenced links.
+
+The Specification should include:
+    - User Stories (~Use Cases)
+    - Tests
+
+### 3.2 Sprint B
+
+**Goal:** To document the API and implement API tests to the full set of functional endpoints (of the backend)
+
+**User Story:** As a project manager, I want the team to specify (document) the API and implement API tests
+
+The specification of the API should include for each route:
+    - the action (GET, POST, etc.)
+    - a small description
+    - parameters
+    - possible response codes and results
+    - reference to related use cases and acceptance criteria
+
+You should place the API specification in the **docs/sprintB/api** folder. Inside this folder, you should create a file for each route. The file name should be the route name, with the extension **.md**. For example, the route **/api/v1/users** should be documented in the file **docs/sprintB/api/users.md**.
+
+The implementation of the API tests should follow the examples, as described in the root **readme** file and the code, as presented in the **src/api_test** folder

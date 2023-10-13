@@ -1,0 +1,44 @@
+@startuml Use Case Diagram
+left to right direction
+skinparam packageStyle rectangle
+skinparam monochrome true
+skinparam shadowing false
+
+
+
+actor "Visitor" as Visitor
+actor User
+
+
+rectangle "DDD Forum Website" {
+usecase "UC1 - Sort the posts" as UC1
+usecase "UC3 - Create a post" as UC3
+usecase "UC4 - Vote on a post" as UC4
+usecase "UC5 - Vote on a comment" as UC5
+usecase "UC6 - Comment on a post" as UC6
+usecase "UC7 - Reply to a comment" as UC7
+usecase "UC8 - View post" as UC8
+usecase "UC9 - Check user accounts details" as UC9
+
+
+
+Visitor -- UC1
+Visitor -- UC8
+Visitor -- UC9
+
+
+
+
+Visitor <|- User
+
+
+
+User -- UC3
+User -- UC4
+User -- UC5
+User -- UC6
+User -- UC7
+
+
+}
+@enduml

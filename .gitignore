@@ -1,0 +1,10 @@
+/node_modules
+/*.env
+npm-debug.log
+.DS_Store
+/templates
+src\api_test\config\postsConstants.ts
+# Local Netlify folder
+.netlify
+/dist
+test-report.html

@@ -1,0 +1,21 @@
+@startuml us009-SSD
+
+title US001: Sort the posts - System Sequence Diagram
+
+autonumber
+
+actor Visitor as "Visitor"
+participant "DDD Forum Website" as System
+skinparam actor {
+BackgroundColor transparent
+}
+activate Visitor
+  Visitor -> System: selects sort option
+
+activate System
+  System --> Visitor: displays sorted posts
+deactivate System
+  
+deactivate Visitor
+
+@enduml

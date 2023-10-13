@@ -1,0 +1,26 @@
+@startuml US002
+
+title US002: Create an Account - System Sequence Diagram
+
+autonumber
+
+actor Visitor as "Visitor"
+participant "DDD Forum Website" as System
+skinparam actor {
+  BackgroundColor transparent
+}
+activate Visitor
+
+Visitor -> System: selects the option to create an account
+activate System
+Visitor <-- System: requests data (email, username, password)
+deactivate System
+Visitor -> System: submits requested data
+activate System
+
+Visitor <-- System: displays success notification
+
+deactivate System
+
+@enduml
+

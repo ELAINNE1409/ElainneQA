@@ -1,0 +1,25 @@
+@startuml us007-SSD
+
+title US 007: Reply to a comment - System Sequence Diagram 
+
+autonumber
+
+actor "User" as User
+participant "DDD Forum Website" as DDD
+
+activate User
+
+    User -> DDD : selects post with comments
+        activate DDD 
+    DDD  --> User: displays comments in post
+        deactivate DDD 
+    User -> DDD : selects comment to reply
+        activate DDD 
+    DDD  --> User: displays reply form
+        deactivate DDD 
+    User -> DDD : enters reply content
+        activate DDD
+    DDD  --> User: displays notification
+        deactivate DDD 
+
+@enduml

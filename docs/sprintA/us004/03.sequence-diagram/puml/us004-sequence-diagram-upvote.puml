@@ -1,0 +1,139 @@
+@startuml us004-SD
+
+title US004: Vote on a post (upvote) - Sequence Diagram 
+
+autonumber
+
+actor "User" as User
+participant "postRouter" as postRouter
+participant "upvotePostController: UpvotePostController" as upvotePostController
+participant "dto: UpvotePostDTO" as dto
+participant "upvotePost: UpvotePost" as UpvotePost
+participant "memberRepo: MemberRepo" as memberRepo
+participant "member: Member" as member
+participant ":MemberMap" as MemberMap
+participant ":Result" as Result
+participant "postRepo: PostRepo" as postRepo
+participant "post: Post" as post
+participant ":PostMap" as PostMap
+participant "postVotesRepo: PostVotesRepo" as postVotesRepo
+participant "existingVotesOnPostByMember: PostVote[]" as postVote
+participant ":PostVoteMap" as PostVoteMap
+participant "postService: PostService" as postService
+
+
+activate User
+
+    User -> postRouter: POST("/api/v1/posts/upvote", \n { "Authorization": accessToken }, \n {"slug": slug})
+    activate postRouter
+
+    postRouter -> upvotePostController: execute(req, res)
+    activate upvotePostController
+
+    upvotePostController -> upvotePostController: executeImpl(req, res)
+    activate upvotePostController
+
+    create dto
+    upvotePostController -> dto
+
+    upvotePostController -> UpvotePost: execute(dto)
+    activate UpvotePost
+
+    UpvotePost -> memberRepo: getMemberByUserId(dto.userId)
+    activate memberRepo
+    create member
+    UpvotePost -> member
+    memberRepo -> MemberMap: toDomain(member)
+    activate MemberMap
+    MemberMap -> Result: isSuccess()
+    activate Result
+    Result --> MemberMap: isSuccess
+    deactivate Result
+    MemberMap -> Result: getValue()
+    activate Result
+    Result --> MemberMap: _value
+    deactivate Result
+    MemberMap --> memberRepo: memberOrError.isSuccess
+    deactivate MemberMap
+    memberRepo --> UpvotePost: MemberMap.memberOrError.isSuccess
+    deactivate memberRepo
+
+    UpvotePost -> postRepo: getPostBySlug(dto.slug)
+    activate postRepo
+    create post
+    UpvotePost -> post
+    postRepo -> PostMap: toDomain(post)
+    activate PostMap
+    PostMap -> Result: isSuccess()
+    activate Result
+    Result --> PostMap: isSuccess
+    deactivate Result
+    PostMap -> Result: getValue()
+    activate Result
+    Result --> PostMap: _value
+    deactivate Result
+    PostMap --> postRepo: postOrError.isSuccess
+    deactivate PostMap
+    postRepo --> UpvotePost: PostMap.postOrError.isSuccess
+    deactivate postRepo
+
+    UpvotePost -> post: get postId ()
+    activate post
+    post --> UpvotePost: postId
+    deactivate post
+    UpvotePost -> member: get memberId ()
+    activate member
+    member --> UpvotePost: memberId
+    deactivate member
+    UpvotePost -> postVotesRepo: getVotesForPostByMemberId(post.postId,  member.memberId)
+    activate postVotesRepo
+    create postVote
+    UpvotePost -> postVote
+    postVotesRepo -> PostVoteMap: toDomain(votes)
+    activate PostVoteMap
+    PostVoteMap -> Result: isSuccess()
+    activate Result
+    Result --> PostVoteMap: isSuccess
+    deactivate Result
+    PostVoteMap -> Result: getValue()
+    activate Result
+    Result --> PostVoteMap: _value
+    deactivate Result
+    PostVoteMap --> postVotesRepo: postVoteOrError.isSuccess
+    deactivate PostVoteMap
+    postVotesRepo --> UpvotePost: PostVoteMap.postVoteOrError.isSuccess
+    deactivate postVotesRepo
+
+    UpvotePost -> postService: upvotePost(post, member, existingVotesOnPostByMember)
+    activate postService
+    postService -> postVote: isUpvote()
+    activate postVote
+    postVote --> postService: false
+    deactivate postVote 
+    
+    postService -> postVote: createUpvote(member.memberId, post.postId)
+    activate postVote
+    postVote --> postService: Result.ok<PostVote>
+    deactivate postVote
+    postService -> post: addVote(upvote)
+    activate post
+    post --> postService: Result.ok<void>()
+    deactivate post
+    postService --> UpvotePost: right(Result.ok<void>())
+    deactivate postService
+
+    UpvotePost -> postRepo: save(post)
+    activate postRepo
+    deactivate postRepo
+
+    UpvotePost --> upvotePostController: right(Result.ok<void>())
+    deactivate UpvotePost
+
+    upvotePostController --> postRouter: ok(res)
+    deactivate upvotePostController
+
+    postRouter --> User: post votes are updated (+1 point)
+
+@enduml
+
+

@@ -1,0 +1,28 @@
+@startuml US012
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title US012: Perform a login - System Sequence Diagram
+
+actor "User" as User
+participant "DDD Forum Website" as DDDForumWebsite
+
+activate User
+
+autonumber
+
+  User -> DDDForumWebsite: selects the option to join
+  activate DDDForumWebsite
+  User <-- DDDForumWebsite: displays create account and login page
+  deactivate DDDForumWebsite
+  User -> DDDForumWebsite: selects the option to login
+  activate DDDForumWebsite
+  User <-- DDDForumWebsite: displays login page
+  deactivate DDDForumWebsite
+  User -> DDDForumWebsite: types and submits requested data (username, password)
+  activate DDDForumWebsite
+    User <-- DDDForumWebsite: validates data and displays success notification
+  deactivate DDDForumWebsite
+
+@enduml

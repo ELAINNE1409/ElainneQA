@@ -1,0 +1,21 @@
+@startuml US011
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title US 011: Perform a logout - System Sequence Diagram
+
+actor "User" as User
+participant "DDD Forum Website" as DDDForumWebsite
+
+activate User
+
+autonumber
+
+
+User -> DDDForumWebsite: selects "logout" option
+activate DDDForumWebsite
+  User <-- DDDForumWebsite: terminates session
+deactivate DDDForumWebsite
+
+@enduml

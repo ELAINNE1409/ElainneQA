@@ -1,0 +1,74 @@
+@startuml us007-SD
+title US 007: Reply to a comment
+autonumber
+
+actor "User" as User
+participant "commentRouter" as commentRouter
+participant "replyToCommentController:ReplyToCommentController" as replyToCommentController
+participant dto
+participant "useCase:ReplyToComment" as ReplyToComment
+participant ":PostSlug" as PostSlug
+participant ":PostRepo" as PostRepo
+
+User -> commentRouter: post
+activate commentRouter
+
+commentRouter -> replyToCommentController: execute(req, res)
+activate replyToCommentController
+replyToCommentController -> replyToCommentController: executeImpl(req, res)
+activate replyToCommentController
+create dto
+replyToCommentController -> dto
+replyToCommentController -> ReplyToComment: execute(dto)
+activate ReplyToComment
+
+
+ReplyToComment -> PostSlug: createFromExisting(req.slug)
+activate PostSlug
+PostSlug --> ReplyToComment: Result.ok<PostSlug>
+deactivate PostSlug
+
+
+ReplyToComment -> Result: getValue()
+activate Result
+Result --> ReplyToComment: value
+deactivate Result
+
+
+ReplyToComment -> PostRepo: getPostBySlug(slug.value)
+activate PostRepo
+PostRepo -> PostMap: toDomain(post)
+activate PostMap
+PostMap --> PostRepo: post
+deactivate PostMap
+PostRepo --> ReplyToComment: post
+deactivate PostRepo
+ReplyToComment -> MemberRepo: getMemberByUserId(userId)
+activate MemberRepo
+MemberRepo -> MemberMap: toDomain(member)
+activate MemberMap
+MemberMap --> MemberRepo: member
+deactivate MemberMap
+MemberRepo --> ReplyToComment: post
+deactivate MemberRepo
+ReplyToComment -> CommentRepo: getCommentByCommentId(commentId)
+activate CommentRepo
+CommentRepo -> CommentMap: toDomain(comment)
+activate CommentMap
+CommentMap --> CommentRepo: comment
+deactivate CommentMap
+CommentRepo --> ReplyToComment: comment
+deactivate CommentRepo
+ReplyToComment -> CommentText: create ()
+activate CommentText
+CommentText --> ReplyToComment: right(Result.ok<void>())
+deactivate CommentText
+ReplyToComment -> PostService: replyToComment(post, member, parentComment, commentText)
+activate PostService
+PostService --> ReplyToComment: right(Result.ok<void>())
+deactivate PostService
+ReplyToComment --> replyToCommentController: right(Result.ok<void>())
+deactivate replyToComment
+replyToCommentController --> commentRouter : ok(res)
+deactivate replyToCommentController
+@enduml

@@ -1,0 +1,155 @@
+@startuml us005-SD
+
+ 
+
+title US 005: Vote on a comment
+
+ 
+
+autonumber
+
+ 
+
+actor "User" as User
+participant "commentRouter" as commentRouter
+participant "upvoteCommentController:\n UpvoteCommentController" as UpvoteCommentController
+participant "dto:\n UpvotePostDTO" as dto
+participant "useCase:\n UpvoteComment" as UpvoteComment
+participant "memberRepo:\n MemberRepo" as MemberRepo
+participant "MemberMap" as MemberMap
+participant "Result" as Result
+participant "commentRepo:\n CommentRepo" as CommentRepo
+participant "CommentMap" as CommentMap
+participant "postRepo:\n PostRepo" as PostRepo
+participant "PostMap" as PostMap
+participant "commentVotesRepo:\n CommentVotesRepo" as CommentVotesRepo
+participant "CommentVoteMap" as CommentVoteMap
+participant "postService:\n PostService" as PostService
+participant "CommentVote" as CommentVote
+participant "Post" as Post
+
+
+
+
+activate User
+
+    User -> commentRouter: POST("/api/v1/comments/:commentld/upvote",\n { "Authorization": accessToken }, \n { commentId: commentId }
+    activate commentRouter
+    
+    commentRouter -> UpvoteCommentController: execute(req, res)
+    activate UpvoteCommentController
+    
+    UpvoteCommentController -> UpvoteCommentController: executeImpl(req, res)
+    activate UpvoteCommentController
+    
+    create dto
+    UpvoteCommentController -> dto
+    
+    UpvoteCommentController -> UpvoteComment: execute(dto)
+    activate UpvoteComment
+    
+    UpvoteComment -> MemberRepo: getMemberByUserId(req.userId)
+    activate MemberRepo
+    
+    MemberRepo -> MemberMap: toDomain(member)
+    activate MemberMap
+    
+    MemberMap -> Result: getValue()
+    activate Result
+    
+    Result --> MemberMap: memberOrError.isSucess 
+    deactivate Result
+    
+    MemberMap --> MemberRepo: member
+    deactivate MemberMap
+    
+    MemberRepo --> UpvoteComment: member
+    deactivate MemberRepo
+    
+    UpvoteComment -> CommentRepo: getCommentByCommentId(req.commentId)
+    activate CommentRepo
+    
+    CommentRepo -> CommentMap: toDomain(comment)
+    activate CommentMap
+    
+    CommentMap -> Result: getValue()
+    activate Result
+    
+    Result --> CommentMap: commentOrError.isSuccess
+    deactivate Result
+    
+    CommentMap --> CommentRepo: comment
+    deactivate CommentMap
+    
+    CommentRepo --> UpvoteComment: comment
+    deactivate CommentRepo
+    
+    UpvoteComment ->  PostRepo: getPostByPostId (comment.postId.id.tostring())
+    activate PostRepo
+    
+    PostRepo -> PostMap: toDomain(post)
+    activate PostMap
+    
+    PostMap -> Result: getValue()
+    activate Result
+    
+    Result --> PostMap: postOrError.isSuccess
+    deactivate Result
+    
+    PostMap --> PostRepo: post
+    deactivate PostMap
+    
+    PostRepo --> UpvoteComment: post 
+    deactivate PostRepo
+    
+    UpvoteComment -> CommentVotesRepo: getVotesForCommentByMemberId(comment.commentId, member.memberId)
+    activate CommentVotesRepo
+    
+    CommentVotesRepo -> CommentVoteMap: toDomain(v)
+    activate CommentVoteMap
+    
+    CommentVoteMap -> Result: getValue()
+    activate Result
+    
+    Result --> CommentVoteMap: commentVoteOrError.isSuccess
+    deactivate Result
+    
+    CommentVoteMap --> CommentVotesRepo: commentVote
+    deactivate CommentVoteMap
+    
+    CommentVotesRepo --> UpvoteComment: commentVote
+    deactivate CommentVotesRepo
+    
+    UpvoteComment -> PostService: UpvoteComment(post, member, comment, existingVotesOnCommentByMember)
+    activate PostService
+    
+    PostService -> CommentVote: createUpvote(member.memberId, comment.commentId)
+    activate CommentVote
+    
+    CommentVote --> PostService: ok
+    deactivate CommentVote
+    
+    PostService -> Comment :addVote(upvote)
+    activate Comment
+    
+    Comment --> PostService: ok
+    deactivate Comment
+    
+    PostService -> Post: updateComment(comment)
+    activate Post
+    
+    Post --> PostService: ok
+    deactivate Post
+    
+    PostService --> UpvoteComment: ok
+    deactivate PostService
+  
+   UpvoteComment --> UpvoteCommentController: ok
+   deactivate UpvoteComment
+   
+   UpvoteCommentController --> commentRouter: ok
+   deactivate UpvoteCommentController
+   
+   deactivate commentRouter
+   
+@enduml

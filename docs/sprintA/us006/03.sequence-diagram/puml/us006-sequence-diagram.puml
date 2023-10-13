@@ -1,0 +1,122 @@
+@startuml us006-SD
+title US 006: Comment on a post
+autonumber
+
+actor "User" as User
+participant "commentRouter" as commentRouter
+participant "replyToPostController:ReplyToPostController" as replyToPostController
+participant "dto" as dto
+participant "useCase:ReplyToPost" as ReplyToPost
+participant ":PostSlug" as PostSlug
+participant ":Result" as Result
+participant ":PostRepo" as PostRepo
+participant ":PostMap" as PostMap
+participant ":MemberRepo" as MemberRepo
+participant ":MemberMap" as MemberMap
+
+participant ":CommentText" as CommentText
+participant ":Comment" as Comment
+participant "post:Post" as Post
+
+
+User -> commentRouter: POST\n("api/v1/comments")\n {"slug": "string", "userId": "string", "comment": "string", "parentCommentId": "string"}\n
+
+activate commentRouter
+commentRouter -> replyToPostController: execute(req, res)
+
+activate replyToPostController
+replyToPostController -> replyToPostController: executeImpl(req, res)
+activate replyToPostController
+
+create dto
+replyToPostController -> dto
+replyToPostController -> ReplyToPost: execute(dto)
+activate ReplyToPost
+
+
+ReplyToPost -> PostSlug: createFromExisting(req.slug)
+activate PostSlug
+PostSlug --> ReplyToPost: Result.ok<PostSlug>
+deactivate PostSlug
+
+
+ReplyToPost -> Result: getValue()
+activate Result
+Result --> ReplyToPost: value
+deactivate Result
+
+
+ReplyToPost -> PostRepo: getPostBySlug(slug.value)
+activate PostRepo
+
+PostRepo -> PostMap: toDomain(post)
+deactivate PostRepo
+activate PostMap
+
+PostMap -> Result: getValue()
+activate Result
+Result --> PostMap: value
+deactivate Result
+
+PostMap --> PostRepo: value
+activate PostRepo
+deactivate PostMap
+
+PostRepo --> ReplyToPost: value
+deactivate PostRepo
+
+
+ReplyToPost -> MemberRepo: getMemberByUserId(userId)
+activate MemberRepo
+
+MemberRepo -> MemberMap: toDomain(post)
+activate MemberMap
+
+MemberMap -> Result: getValue()
+activate Result
+Result --> MemberMap: value
+deactivate Result
+
+MemberMap --> MemberRepo: value
+deactivate MemberMap
+
+MemberRepo --> ReplyToPost: value
+deactivate MemberRepo
+
+
+ReplyToPost -> CommentText: create({value: req.comment})
+activate CommentText
+CommentText --> ReplyToPost: Result.ok<CommentText>
+deactivate CommentText
+
+ReplyToPost -> Comment: create({memberId, text, postId})
+activate Comment
+Comment --> ReplyToPost: MemberId.create(this.id)
+deactivate Comment
+
+ReplyToPost -> Result: getValue()
+activate Result
+Result --> ReplyToPost: value
+deactivate Result
+
+ReplyToPost -> Post: addComment(comment)
+activate Post
+Post --> ReplyToPost: Result.ok
+deactivate Post
+
+
+ReplyToPost -> PostRepo: save(post)
+activate PostRepo
+deactivate PostRepo
+
+ReplyToPost --> replyToPostController: right(Result.ok<void>())
+deactivate ReplyToPost
+
+replyToPostController --> commentRouter: res.sendStatus(200)
+deactivate replyToPostController
+
+
+commentRouter --> User: comment created
+deactivate commentRouter
+
+@enduml

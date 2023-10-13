@@ -1,0 +1,34 @@
+@startuml US0052
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title US005 - Vote on a comment - System Sequence Diagram
+
+autonumber
+
+actor "User" as Employee
+participant "DDD Forum Website" as System
+
+activate Employee
+
+    Employee -> System : selects a post with comments
+    activate System
+
+        System --> Employee : displays the post with comments
+    deactivate System
+
+    Employee -> System : votes on the comment
+    activate System
+    
+    System --> Employee : returns the updated vote count
+   deactivate System
+
+
+    Employee -> System : reverts the vote
+    activate System
+
+    System --> Employee : returns the updated vote count
+   
+    deactivate System
+@enduml

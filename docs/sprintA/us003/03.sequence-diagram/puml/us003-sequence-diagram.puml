@@ -1,0 +1,65 @@
+@startuml us003-SD
+title US 003: Create a post - Sequence Diagram
+autonumber
+
+actor "User" as User
+participant "postRouter" as postRouter
+participant "postRouter:createPostController" as createPostController
+participant "CreatePostDTO" as PostDTO
+participant "useCase:CreatePost" as CreatePost
+participant ":MemberRepo" as MemberRepo
+participant ":MemberMap" as MemberMap
+participant ":Result" as Result
+participant ":PostTitle" as PostTitle
+participant ":PostText" as PostText
+participant ":PostSlug" as PostSlug
+participant ":Post" as Post
+
+User -> postRouter: POST\n ("api/v1/posts/",\n {"Authorization": accessToken},\n {"title":"string", "postType":"string", "text":"string", "link":""})
+
+activate postRouter
+postRouter -> createPostController: execute(req, res)
+activate createPostController
+createPostController -> createPostController: executeImpl(req, res)
+activate createPostController
+create PostDTO
+createPostController -> PostDTO
+createPostController -> CreatePost: execute(dto)
+activate CreatePost
+CreatePost -> MemberRepo: getMemberByUserId(userId)
+activate MemberRepo
+MemberRepo -> MemberMap: toDomain(member)
+activate MemberMap
+MemberMap -> Result: getValue()
+activate Result
+Result --> MemberMap: value
+deactivate Result
+MemberMap --> MemberRepo: member
+deactivate MemberMap
+MemberRepo --> CreatePost: member
+deactivate MemberRepo
+CreatePost -> PostTitle: create(request.title)
+activate PostTitle
+PostTitle --> CreatePost: Result.ok<PostTitle>
+deactivate PostTitle
+CreatePost -> PostText: create(request.text)
+activate PostText
+PostText --> CreatePost: Result.ok<PostText>
+deactivate PostText
+CreatePost -> PostSlug: create(title)
+activate PostSlug
+PostSlug --> CreatePost: Result.ok<PostSlug>
+deactivate PostSlug
+CreatePost -> Post: create(props, id)
+activate Post
+Post --> CreatePost: Result.ok<Post>
+deactivate Post
+CreatePost --> createPostController: Result.ok<Post>
+deactivate CreatePost
+deactivate createPostController
+createPostController --> postRouter: Result.ok<Post>
+deactivate createPostController
+postRouter --> User: Result.ok<Post>
+deactivate postRouter
+
+@enduml

@@ -1,0 +1,59 @@
+@startuml us001-SSD
+
+title US 001: Sort the posts
+
+autonumber
+
+actor User
+participant PostRouter
+participant "getRecentPostsController: GetRecentPostsController" as GetRecentPostsController
+participant GetRecentPostsRequestDTO
+participant "useCase:GetRecentPosts" as GetRecentPosts
+participant "postRepo:PostRepo" as PostRepo
+participant PostDetailsMap
+participant Result
+
+User-> PostRouter: GET ("/api/v1/posts/recent")
+activate PostRouter
+
+PostRouter -> GetRecentPostsController: execute(req, res)
+
+activate GetRecentPostsController
+GetRecentPostsController -> GetRecentPostsController: executeImpl(req,res)
+activate GetRecentPostsController
+GetRecentPostsController -> GetRecentPostsRequestDTO ** : (offset, userId)
+GetRecentPostsController -> GetRecentPosts : execute(dto)
+
+activate GetRecentPosts
+GetRecentPosts -> PostRepo : getRecentPosts(req.offset)
+
+activate PostRepo
+PostRepo -> PostDetailsMap : toDomain(p) 
+
+activate PostDetailsMap
+
+
+
+
+PostDetailsMap -> Result : getValue()
+
+activate Result
+Result -> PostDetailsMap : value
+deactivate Result
+
+PostDetailsMap -> PostRepo : value
+deactivate PostDetailsMap
+
+PostRepo -> GetRecentPosts : result.ok<PostDetails>
+deactivate PostRepo
+
+GetRecentPosts -> GetRecentPostsController :ok<GetRecentPostsResponseDTO>
+deactivate GetRecentPosts
+deactivate GetRecentPostsController
+GetRecentPostsController --> PostRouter: res.sendStatus(200)
+deactivate GetRecentPostsController
+
+PostRouter -> User : posts sorted
+
+
+@enduml

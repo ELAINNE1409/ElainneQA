@@ -1,0 +1,27 @@
+@startuml US008 (alternative-three)
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title US008: View post - System Sequence Diagram 
+
+autonumber
+
+actor Visitor as "Visitor"
+participant "DDD Forum Website" as System
+
+activate Visitor
+
+  Visitor -> System: accesses post details
+
+  activate System
+    System --> Visitor: displays post details
+  deactivate System
+
+  Visitor -> System: accesses link
+
+  activate System
+    System --> Visitor: displays link page
+  deactivate System
+
+@enduml

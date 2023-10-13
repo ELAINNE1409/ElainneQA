@@ -1,0 +1,23 @@
+@startuml us006-SSD
+
+title US006: Comment On A Post - System Sequence Diagram 
+
+autonumber
+
+actor "User" as User
+participant "DDD Forum Website" as DDDForumWebsite
+
+activate User
+
+    User -> DDDForumWebsite: selects a post
+    activate DDDForumWebsite
+        DDDForumWebsite --> User: displays post page and requests comment
+    deactivate DDDForumWebsite
+
+    User -> DDDForumWebsite: types and submits requested data (comment)
+    activate DDDForumWebsite
+        DDDForumWebsite --> User: displays success notification
+    deactivate DDDForumWebsite
+
+@enduml
+

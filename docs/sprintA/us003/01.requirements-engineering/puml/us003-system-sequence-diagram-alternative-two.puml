@@ -1,0 +1,27 @@
+@startuml us003-SSD
+
+title US003: Create A Post - System Sequence Diagram - Alternative Two
+
+autonumber
+
+actor "User" as User
+participant "DDD Forum Website" as DDDForumWebsite
+
+activate User
+
+    User -> DDDForumWebsite: chooses to submit a post
+    activate DDDForumWebsite
+        DDDForumWebsite --> User: displays post page and requests post
+    deactivate DDDForumWebsite
+
+    User -> DDDForumWebsite: selects post type "Link"
+    activate DDDForumWebsite
+        DDDForumWebsite --> User: displays link field 
+    deactivate DDDForumWebsite
+
+    User -> DDDForumWebsite: types and submits requested data (title, link)
+    activate DDDForumWebsite
+        DDDForumWebsite --> User: displays success notification
+    deactivate DDDForumWebsite
+
+@enduml
