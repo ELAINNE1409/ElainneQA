@@ -7,26 +7,89 @@ import { right, left } from '../../../shared/core/Either';
 import { PostUtil } from '../utils/PostUtil';
 import { PostDTO } from '../dtos/postDTO';
 
+/**
+ * Interface that defines the methods for interacting with post-related services.
+ */
 export interface IPostService {
+  /**
+   * Create a new post.
+   *
+   * @param title - The title of the post.
+   * @param type - The type of the post.
+   * @param text - Optional text content of the post.
+   * @param link - Optional link associated with the post.
+   * @returns A promise of an APIResponse indicating the result of the operation.
+   */
   createPost(
     title: string,
     type: PostType,
     text?: string,
     link?: string
   ): Promise<APIResponse<void>>;
+
+  /**
+   * Get recent posts.
+   *
+   * @param offset - Optional offset for pagination.
+   * @returns A promise of an APIResponse containing an array of Post objects.
+   */
   getRecentPosts(offset?: number): Promise<APIResponse<Post[]>>;
+
+  /**
+   * Get popular posts.
+   *
+   * @param offset - Optional offset for pagination.
+   * @returns A promise of an APIResponse containing an array of Post objects.
+   */
   getPopularPosts(offset?: number): Promise<APIResponse<Post[]>>;
+
+  /**
+   * Get less-voted posts.
+   *
+   * @param offset - Optional offset for pagination.
+   * @returns A promise of an APIResponse containing an array of Post objects.
+   */
+  getLessVoted(offset?: number): Promise<APIResponse<Post[]>>;
+
+  /**
+   * Get a post by its slug.
+   *
+   * @param slug - The slug of the post.
+   * @returns A promise of an APIResponse containing a Post object.
+   */
   getPostBySlug(slug: string): Promise<APIResponse<Post>>;
+
+  /**
+   * Upvote a post.
+   *
+   * @param slug - The slug of the post.
+   * @returns A promise of an APIResponse indicating the result of the operation.
+   */
   upvotePost(slug: string): Promise<APIResponse<void>>;
+
+  /**
+   * Downvote a post.
+   *
+   * @param slug - The slug of the post.
+   * @returns A promise of an APIResponse indicating the result of the operation.
+   */
   downvotePost(slug: string): Promise<APIResponse<void>>;
-  getPostAscending(): Promise<APIResponse<Post[]>>;
 }
 
+/**
+ * Implementation of the IPostService interface for interacting with post-related services.
+ */
 export class PostService extends BaseAPI implements IPostService {
   constructor(authService: IAuthService) {
     super(authService);
   }
 
+  /**
+   * Get a post by its slug.
+   *
+   * @param slug - The slug of the post.
+   * @returns A promise of an APIResponse containing a Post object.
+   */
   public async getPostBySlug(slug: string): Promise<APIResponse<Post>> {
     try {
       const accessToken = this.authService.getToken('access-token');
@@ -49,6 +112,12 @@ export class PostService extends BaseAPI implements IPostService {
     }
   }
 
+  /**
+   * Get recent posts.
+   *
+   * @param offset - Optional offset for pagination.
+   * @returns A promise of an APIResponse containing an array of Post objects.
+   */
   public async getRecentPosts(offset?: number): Promise<APIResponse<Post[]>> {
     try {
       const accessToken = this.authService.getToken('access-token');
@@ -75,6 +144,12 @@ export class PostService extends BaseAPI implements IPostService {
     }
   }
 
+  /**
+   * Get popular posts.
+   *
+   * @param offset - Optional offset for pagination.
+   * @returns A promise of an APIResponse containing an array of Post objects.
+   */
   public async getPopularPosts(offset?: number): Promise<APIResponse<Post[]>> {
     try {
       const accessToken = this.authService.getToken('access-token');
@@ -95,79 +170,4 @@ export class PostService extends BaseAPI implements IPostService {
       );
     } catch (err) {
       return left(
-        err.response ? err.response.data.message : 'Connection failed'
-      );
-    }
-  }
-
-  public async createPost(
-    title: string,
-    type: PostType,
-    text?: string,
-    link?: string
-  ): Promise<APIResponse<void>> {
-    try {
-      await this.post('/posts', { title, postType: type, text, link }, null, {
-        authorization: this.authService.getToken('access-token')
-      });
-      return right(Result.ok<void>());
-    } catch (err) {
-      return left(
-        err.response ? err.response.data.message : 'Connection failed'
-      );
-    }
-  }
-
-  async upvotePost(slug: string): Promise<APIResponse<void>> {
-    try {
-      await this.post('/posts/upvote', { slug }, null, {
-        authorization: this.authService.getToken('access-token')
-      });
-      return right(Result.ok<void>());
-    } catch (err) {
-      return left(
-        err.response ? err.response.data.message : 'Connection failed'
-      );
-    }
-  }
-
-  async downvotePost(slug: string): Promise<APIResponse<void>> {
-    try {
-      await this.post('/posts/downvote', { slug }, null, {
-        authorization: this.authService.getToken('access-token')
-      });
-      return right(Result.ok<void>());
-    } catch (err) {
-      return left(
-        err.response ? err.response.data.message : 'Connection failed'
-      );
-    }
-  }
-  public async getPostAscending(): Promise<APIResponse<Post[]>> {
-    try {
-      const accessToken = this.authService.getToken('access-token');
-
-      const isAuthenticated = !!accessToken === true;
-
-      const auth = {
-        authorization: accessToken
-      };
-
-      const response = await this.get(
-        '/posts',
-
-        isAuthenticated ? auth : null
-      );
-
-      const sortedPosts = response.data.posts
-        .map((p: PostDTO) => PostUtil.toViewModel(p))
-        .sort((a: Post, b: Post) => a.points - b.points);
-
-      return right(Result.ok<Post[]>(sortedPosts));
-    } catch (err) {
-      return left(
-        err.response ? err.response.data.message : 'Connection failed'
-      );
-    }
-  }
-};
+        err

@@ -5,43 +5,43 @@
 
 ### 1.1. User Story Description
 
-
-As a visitor, I want to sort the posts based on their popularity, unpopularity or creation date.
-
+As a user, I want to be able to sort the posts, so that I can discover the most popular, less-voted or new posts.
 
 ### 1.2. Customer Specifications and Clarifications
 
 
 **From the specifications document:**
 
-The functionality to sort the posts is available to both users and visitors.
+> **Question:** How will the posts be sorted in the user interface?
 
 > **Answer:** 
->  The purpose of sorting the posts is to allow the visitor to  discover the most popular, unpopular or recent information.
+>  The posts will be sorted in popular, less-voted or new posts.
 
 > **Question:** 
->  How can the visitor sort the posts?
+>  If there are posts with the same number of votes, how will they be sorted?
 >
 > **Answer:**
->  The visitor can sort the posts by selecting "Popular", "Unpopular" or "New".
+>  They will be sorted by the order of publication, with the most recent appearing first.
 
 > **Question:**
->  Is the sorting option available for all visitors?
+>  If the user is not logged in, will he be able to see the sorted posts?
 >
 > **Answer:**
->  Yes, the sorting options is available for all visitors.
+>  Yes, he will be able to see the sorted posts, but he will not be able to vote.
 
 
 ### 1.3. Acceptance Criteria
 
 
-* **AC1:** The sort functionality doesn't require an authentication.
-* **AC2:** The visitor must be able to sort the posts based on three criteria: Popular, Unpopular and New.
+* **AC1:** The user posts must be automatically sorted in ascending order based on the number of votes, starting with the posts with the lowest number of votes.
+* **AC2:** The user must be able to see the number of votes of each post.
+* **AC3:** Posts with the same number of votes must be sorted by the order of publication, with the most recent appearing first.
 
 
 ### 1.4. Found out Dependencies
 
-* There is a dependency to existing posts, so that the visitor can sort them.
+- There are dependencies for "US 002: Create an account" - "US 010: Log in" because the user needs to be authenticated and logged in to access. "US 003: Creat a post" there must be posts in order to be ranked. 
+
 
 ### 1.5 Input and Output Data
 
@@ -50,12 +50,12 @@ The functionality to sort the posts is available to both users and visitors.
 
 	
 * Selected data:
-	* Sort option: Popular, Unpopular or New, from the user interface.
+	* Sort option: Popular, Low-vote posts or New, from the user interface.
 
 
 **Output Data:**
 
-* List of posts, sorted based on the selected option (Popular, Unpopular or New).
+* List of posts, sorted based on the selected option (Popular, Low-vote Posts or New).
 
 
 

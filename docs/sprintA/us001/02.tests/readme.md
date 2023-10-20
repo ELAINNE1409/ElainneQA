@@ -1,61 +1,69 @@
 # US 001 - Sort the posts
 
-# 1. Tests 
+# 1. Tests
 
->**Test 1:** Check that the visitor can sort the posts by popular, unpopular and new - AC1, AC2.
+> **Test 1:** 
 
 **Description:**
 
-The visitor should be able to sort the posts based on the three criteria: Popular, Unpopular and New.
-It is not necessary to be authenticated to sort the posts.
+As a member, I want to ensure that user posts are sorted in ascending order based on the number of votes. AC1 
 
 **Preconditions:**
 
-1. Visitor is on the forum website's homepage.
-2. There is at least an existing post in the forum.
+1. The app has multiple user posts with varying vote counts.
 
 **Test Steps:**
 
-1. Click on the "Popular" sorting option.
-2. Check that the posts are displayed on the forum website's homepage.
-3. Click on the "Unpopular" sorting option.
-4. Check that the posts are displayed on the forum website's homepage.
-5. Click on the "New" sorting option.
-6. Check that the posts are displayed on the forum website's homepage.
+1. Retrieve the list of user posts from the app.
+2. Sort user posts based on the number of votes in ascending order.
+3. Check that user posts are sorted in ascending order based on the number of votes.
 
-**Expected result:**
+**Expected Result:**
 
-* Visitor doesn't need to be authenticated to sort the posts.
-* By default, the posts are arranged based on their popularity. 
-* The "Popular" option rearranges the posts based on their popularity, sorted by descending number of votes.
-* The "Unpopular" option rearranges the posts based on their popularity, sorted by ascending number of votes.
-* The "New" option rearranges the posts based on their creation date.
+- User posts should be ordered in ascending order, starting with the posts with the fewest votes.
+- The order of seats must comply with AC1.
 
->**Test 2:** Check that the user can sort the posts by popular, unpopular and new - AC1, AC2.
+> **Test 2:** 
 
 **Description:**
-The user should be able to sort the posts based on the three criteria: Popular, Unpopular and New.
+
+As a user, I want to see the number of votes for each post. AC2
 
 **Preconditions:**
-1. Visitor is on the forum website's homepage.
-2. There is at least an existing post in the forum.
-3. The user is authenticated.
+
+1. The app has several user posts with known vote counts.
 
 **Test Steps:**
 
-1. Click on the "Popular" sorting option.
-2. Check that the posts are displayed on the forum website's homepage.
-3. Click on the "Unpopular" sorting option.
-4. Check that the posts are displayed on the forum website's homepage.
-5. Click on the "New" sorting option.
-6. Check that the posts are displayed on the forum website's homepage.
+1. Retrieve the list of user posts from the app.
 
-**Expected result:**
+**Expected Result:**
 
-* An authenticated user can sort the posts as intended.
-* By default, the posts are arranged based on their popularity. 
-* The "Popular" option rearranges the posts based on their popularity, sorted by descending number of votes.
-* The "Unpopular" option rearranges the posts based on their popularity, sorted by ascending number of votes.
-* The "New" option rearranges the posts based on their creation date.
+- Each user post should display the number of votes next to it.
+The vote counts displayed must be accurate and match the actual vote counts.
+
+> **Test 3:** 
+
+**Description:**
+
+As a member, I want to make sure that posts with an equal number of votes are sorted in order of publication, with the most recent appearing first. AC3
+
+**Preconditions:**
+
+1. The app has multiple posts from users with equal vote counts.
+
+**Test Steps:**
+
+1. Retrieve the list of user posts from the app.
+2. Sort the posts of users with equal vote count in the order in which they were posted.
+
+**Expected Result:**
+
+- Posts from users with the same number of votes should be sorted based on the order in which they were posted, with the most recent appearing first.
+- Screening must comply with AC3.
+
+
+
+
 
 

@@ -1,0 +1,26 @@
+@startuml us012-SD
+
+title US 012: Delete User 
+
+autonumber
+
+actor User
+participant userRouter
+participant "deleteUserController: \n deleteUserController" as DeleteUserController
+
+participant "useCase:DeleteUserCase" as DeleteUserCase
+participant "userRepo:IUserRepo" as UserRepo
+participant "user : User" as user
+
+
+User-> userRouter: delete ("/api/v1/user/:id")
+activate userRouter
+
+userRouter -> DeleteUserController: execute(req, res)
+DeleteUserController -> DeleteUserController: executeImpl(req,res)
+DeleteUserController -> DeleteUserCase : execute(dto)
+
+DeleteUserCase -> UserRepo : user = getUserByUserId
+DeleteUserCase -> user : delete
+DeleteUserCase -> UserRepo : save(user)
+

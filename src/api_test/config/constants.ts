@@ -1,9 +1,9 @@
 enum UserConstants {
-    USERNAME = "sevetse13",
-    USERNAME2 = "groupFOUR",
-    EMAIL = "sevetse@hotmail.com",
-    EMAIL2 = "group4@hotmail.com",
-    PASSWORD = "1234567",
+    USERNAME = "Elainne",
+    USERNAME2 = "Elainne2",
+    EMAIL = "elainnecristina.14@gmail.com",
+    EMAIL2 = "group5@hotmail.com",
+    PASSWORD = "12345",
     TITLE = "Hello World!",
     POSTTYPE1 = "text",
     POSTTYPE2 = "link",
@@ -25,5 +25,4 @@ enum UserConstants {
     EMPTYTOKEN = "",
     EMPTYID = "",
 }
-
-export default UserConstants;
+export default UserConstants;*

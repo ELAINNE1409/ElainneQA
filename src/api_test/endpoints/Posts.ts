@@ -2,7 +2,7 @@
  *
  * @remarks
  * This code is based on the project {@link https://github.com/jmfiola/jest-api-test-typescript-example}.
-*/
+ */
 
 import { AxiosResponse } from "axios";
 import { AEndpoint } from "./abstracts/AEndpoint";
@@ -11,21 +11,24 @@ export default class Posts extends AEndpoint {
   constructor() {
     super("/posts", "posts");
   }
-  
+
   //Sort posts
   public async sortPosts(sortBy: string): Promise<AxiosResponse> {
     return this.restClient.sendGet({
       route: "/sort",
-      data: { sortBy: sortBy }
+      data: { sortBy: sortBy },
     });
   }
 
   //Get popular posts
-  public async getPopularPosts(offset?: number, accessToken?: string): Promise<AxiosResponse> {
+  public async getPopularPosts(
+    offset?: number,
+    accessToken?: string,
+  ): Promise<AxiosResponse> {
     const requestConfig = {
       route: "/popular",
       params: { offset: offset },
-      headers: {}  // Inicializa os headers vazios
+      headers: {}, // Inicializa os headers vazios
     };
 
     if (accessToken) {
@@ -35,13 +38,33 @@ export default class Posts extends AEndpoint {
     return this.restClient.sendGet(requestConfig);
   }
 
+  // Método para obter posts com menos votos em ordem ascendente
+  public async getLessVotedPosts(
+    offset?: number,
+    accessToken?: string,
+  ): Promise<AxiosResponse> {
+    const requestConfig = {
+      route: "/less-voted",
+      params: { offset, orderBy: "asc" }, // Adicionado o parâmetro "orderBy" com valor "asc"
+      headers: {} as Record<string, string>,
+    };
+
+    if (accessToken) {
+      requestConfig.headers["Authorization"] = accessToken;
+    }
+
+    return this.restClient.sendGet(requestConfig);
+  }
 
   //Get recent posts
-  public async getRecentPosts(offset?: number, accessToken?: string): Promise<AxiosResponse> {
+  public async getRecentPosts(
+    offset?: number,
+    accessToken?: string,
+  ): Promise<AxiosResponse> {
     const requestConfig = {
       route: "/recent",
       params: { offset: offset },
-      headers: {}  // Inicializa os headers vazios
+      headers: {}, // Inicializa os headers vazios
     };
 
     if (accessToken) {
@@ -52,27 +75,36 @@ export default class Posts extends AEndpoint {
   }
 
   //Create a post
-  public async createPost(accessToken: string, title: string, postType: string, text: string, link?: string): Promise<AxiosResponse> {
+  public async createPost(
+    accessToken: string,
+    title: string,
+    postType: string,
+    text: string,
+    link?: string,
+  ): Promise<AxiosResponse> {
     const postData: any = {
       title: title,
       postType: postType,
       text: text,
-      link: link || ""
+      link: link || "",
     };
 
     return this.restClient.sendPost({
       route: "/",
-      headers: { "Authorization": accessToken },
-      data: postData
+      headers: { Authorization: accessToken },
+      data: postData,
     });
   }
 
   //Get a post by slug
-  public async getPostBySlug(slug: string, accessToken?: string): Promise<AxiosResponse> {
+  public async getPostBySlug(
+    slug: string,
+    accessToken?: string,
+  ): Promise<AxiosResponse> {
     const requestConfig = {
       route: "/",
       params: { slug: slug },
-      headers: {}
+      headers: {},
     };
 
     if (accessToken) {
@@ -82,22 +114,27 @@ export default class Posts extends AEndpoint {
     return this.restClient.sendGet(requestConfig);
   }
 
-  //Upvote a post 
-  public async upvotePost(accessToken: string, slug: string): Promise<AxiosResponse> {
+  //Upvote a post
+  public async upvotePost(
+    accessToken: string,
+    slug: string,
+  ): Promise<AxiosResponse> {
     return this.restClient.sendPost({
       route: "/upvote",
-      headers: { "Authorization": accessToken },
-      data: { slug: slug }
+      headers: { Authorization: accessToken },
+      data: { slug: slug },
     });
   }
 
   //Downvote a post
-  public async downvotePost(accessToken: string, slug: string): Promise<AxiosResponse> {
+  public async downvotePost(
+    accessToken: string,
+    slug: string,
+  ): Promise<AxiosResponse> {
     return this.restClient.sendPost({
       route: "/downvote",
-      headers: { "Authorization": accessToken },
-      data: { slug: slug }
+      headers: { Authorization: accessToken },
+      data: { slug: slug },
     });
   }
 }
-

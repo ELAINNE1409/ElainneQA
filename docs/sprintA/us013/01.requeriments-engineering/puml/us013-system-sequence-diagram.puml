@@ -1,0 +1,20 @@
+@startuml US013 
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Delete User - System Sequence Diagram
+
+actor "User" as User
+participant "DDD Fórum System" as DDDForumSystem
+
+activate User
+
+autonumber
+
+User -> DDDForumSystem: requests to "delete user" account
+activate DDDForumSystem
+  User <-- DDDForumSystem: confirms account deletion
+deactivate DDDForumSystem
+
+@enduml
