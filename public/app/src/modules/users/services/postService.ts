@@ -12,22 +12,6 @@ import { PostDTO } from '../dtos/postDTO';
  */
 export interface IPostService {
   /**
-   * Create a new post.
-   *
-   * @param title - The title of the post.
-   * @param type - The type of the post.
-   * @param text - Optional text content of the post.
-   * @param link - Optional link associated with the post.
-   * @returns A promise of an APIResponse indicating the result of the operation.
-   */
-  createPost(
-    title: string,
-    type: PostType,
-    text?: string,
-    link?: string
-  ): Promise<APIResponse<void>>;
-
-  /**
    * Get recent posts.
    *
    * @param offset - Optional offset for pagination.
@@ -105,7 +89,7 @@ export class PostService extends BaseAPI implements IPostService {
       );
 
       return right(Result.ok<Post>(PostUtil.toViewModel(response.data.post)));
-    } catch (err) {
+    } catch (err: any) {
       return left(
         err.response ? err.response.data.message : 'Connection failed'
       );
@@ -137,7 +121,7 @@ export class PostService extends BaseAPI implements IPostService {
           response.data.posts.map((p: PostDTO) => PostUtil.toViewModel(p))
         )
       );
-    } catch (err) {
+    } catch (err: any) {
       return left(
         err.response ? err.response.data.message : 'Connection failed'
       );
@@ -168,6 +152,127 @@ export class PostService extends BaseAPI implements IPostService {
           response.data.posts.map((p: PostDTO) => PostUtil.toViewModel(p))
         )
       );
-    } catch (err) {
+    } catch (err: any) {
       return left(
-        err
+        err.response ? err.response.data.message : 'Connection failed'
+      );
+    }
+  }
+
+  /**
+ * Get less-voted posts.
+ *
+ * @param offset - Optional offset for pagination.
+ * @returns A promise of an APIResponse containing an array of Post objects.
+ */
+  public async getLessVoted(offset?: number): Promise<APIResponse<Post[]>> {
+    try {
+      const accessToken = this.authService.getToken('access-token');
+      const isAuthenticated = !!accessToken === true;
+      const auth = {
+        authorization: accessToken
+      };
+      const response = await this.get(
+        '/posts/less-voted',
+        { offset },
+        isAuthenticated ? auth : null
+      );
+  
+      return right(
+        Result.ok<Post[]>(
+          response.data.posts.map((p: PostDTO) => PostUtil.toViewModel(p))
+        )
+      );
+    } catch (err: any) {
+      return left(
+        err.response ? err.response.data.message : 'Connection failed'
+      );
+    }
+  }
+  
+  /**
+   * Create a new post.
+   *
+   * @param title - The title of the post.
+   * @param type - The type of the post.
+   * @param text - Optional text content of the post.
+   * @param link - Optional link associated with the post.
+   * @returns A promise of an APIResponse indicating the result of the operation.
+   */ 
+  public async createPost(
+    title: string,
+    type: PostType,
+    text?: string,
+    link?: string   ): Promise<APIResponse<void>> {
+    try {
+      const accessToken = this.authService.getToken('access-token');
+      const isAuthenticated = !!accessToken === true;
+      const auth = {
+        authorization: accessToken
+      };
+      const response = await this.post(
+        '/posts',
+        { title, type, text, link },
+        isAuthenticated ? auth : null
+      );
+  
+      return right(Result.ok<void>());
+    } catch (err: any) {
+      return left(
+        err.response ? err.response.data.message : 'Connection failed'
+      );
+    }
+  }
+  /**
+   * Upvote a post.
+   *
+   * @param slug - The slug of the post.
+   * @returns A promise of an APIResponse indicating the result of the operation.
+   */
+  public async upvotePost(slug: string): Promise<APIResponse<void>> {
+    try {
+      const accessToken = this.authService.getToken('access-token');
+      const isAuthenticated = !!accessToken === true;
+      const auth = {
+        authorization: accessToken
+      };
+      const response = await this.post(
+        '/posts/upvote',
+        { slug },
+        isAuthenticated ? auth : null
+      );
+
+      return right(Result.ok<void>());
+    } catch (err: any) {
+      return left(
+        err.response ? err.response.data.message : 'Connection failed'
+      );
+    }
+  }
+  /**
+   * Downvote a post.
+   *
+   * @param slug - The slug of the post.
+   * @returns A promise of an APIResponse indicating the result of the operation.
+   */
+  public async downvotePost(slug: string): Promise<APIResponse<void>> {
+    try {
+      const accessToken = this.authService.getToken('access-token');
+      const isAuthenticated = !!accessToken === true;
+      const auth = {
+        authorization: accessToken
+      };
+      const response = await this.post(
+        '/posts/downvote',
+        { slug },
+        isAuthenticated ? auth : null
+      );
+
+      return right(Result.ok<void>());
+    } catch (err: any) {
+      return left(
+        err.response ? err.response.data.message : 'Connection failed'
+      );
+    }
+  }
+}
