@@ -1,11 +1,11 @@
 import { APIResponse } from '../../../shared/infra/services/APIResponse';
-import { PostType, Post } from '../models/Post';
+import { PostType, Post } from '../../../modules/forum/models/Post';
 import { BaseAPI } from '../../../shared/infra/services/BaseAPI';
 import { IAuthService } from '../../users/services/authService';
 import { Result } from '../../../shared/core/Result';
 import { right, left } from '../../../shared/core/Either';
-import { PostUtil } from '../utils/PostUtil';
-import { PostDTO } from '../dtos/postDTO';
+import { PostUtil } from '../../../modules/forum/utils/PostUtil';
+import { PostDTO } from '../../../modules/forum/dtos/postDTO';
 
 /**
  * Interface that defines the methods for interacting with post-related services.
