@@ -8,6 +8,9 @@ import { AxiosResponse } from "axios";
 import { AEndpoint } from "./abstracts/AEndpoint";
 
 export default class Posts extends AEndpoint {
+  getLessVoted() {
+    throw new Error("Method not implemented.");
+  }
   constructor() {
     super("/posts", "posts");
   }

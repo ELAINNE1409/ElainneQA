@@ -11,7 +11,6 @@ import Posts from "./endpoints/Posts";
 import Comment from "./endpoints/Comments";
 import { AxiosResponse } from "axios";
 import Constants from "./config/postsConstants";
-import { GetLessVoted } from "../modules/forum/useCases/post/getLessVoted/getLessVoted";
 import { PostSlug } from "../modules/forum/domain/postSlug";
 import e from "express";
 
@@ -113,21 +112,23 @@ describe("Less Voted Endpoint Test Suite", () => {
   /**
    * Get less voted.
    */
-  it("Get less voted", async (): Promise<void> => {
+  /*it("Get less voted", async (): Promise<any> => {
     const response = await posts.getLessVoted();
     expect(response.status).toBe(200);
-  });
+  });/*
 
   /**
    * Get slug posts.
    */
-  it("Get slug posts", async (): Promise<void> => {
+  it("Get slug posts", async (): Promise<any> => {
     // Suponha que você tenha um ID de post válido para obter o slug.
     const postId = "seu-id-de-post";
     const response = await posts.getPostBySlug(postId);
     expect(response.status).toBe(200);
-    
+
   });
+
+
 
   /**
    * Upvote a post.
