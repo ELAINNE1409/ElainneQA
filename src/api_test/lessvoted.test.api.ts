@@ -1,4 +1,3 @@
-
 /**
  * API TESTS FOR LESS VOTED ENDPOINT
  */
@@ -9,7 +8,6 @@ import ConfigHandler from "./config/configHandler";
 import Users from "./endpoints/Users";
 import Posts from "./endpoints/Posts";
 import Comment from "./endpoints/Comments";
-import { AxiosResponse } from "axios";
 import Constants from "./config/postsConstants";
 import { PostSlug } from "../modules/forum/domain/postSlug";
 import e from "express";
@@ -25,13 +23,9 @@ const log = new Logger({
 
 let posts: Posts;
 let users: Users;
-let comments: Comment;
-
 let accessToken: string;
 let refreshToken: string;
-let slug: string;
-let comentId: string;
-let postId: string;
+let message: string;
 
 /**
  * Test Suite for Less Voted Endpoint
@@ -48,7 +42,7 @@ describe("Less Voted Endpoint Test Suite", () => {
   /**
    * Creates a user.
    */
-  it("Create User", async (): Promise<void> => {
+  it("Create User", async () => {
     const response = await users.post("Cristina", "elainne@gmail.com", "cristina");
     expect(response.status).toBe(200);
   });
@@ -56,7 +50,7 @@ describe("Less Voted Endpoint Test Suite", () => {
   /**
    * Post Login.
    */
-  it("Post Login", async (): Promise<void> => {
+  it("Post Login", async () => {
     const response = await users.postLogin("Cristina", "cristina");
     expect(response.status).toBe(200);
     expect(response.data.accessToken).toBeDefined();
@@ -68,7 +62,7 @@ describe("Less Voted Endpoint Test Suite", () => {
   /**
    * Get Me.
    */
-  it("Get Me", async (): Promise<void> => {
+  it("Get Me", async () => {
     const response = await users.getMe(accessToken);
     expect(response.status).toBe(200);
     expect(response.data.user).toBeDefined();
@@ -82,7 +76,7 @@ describe("Less Voted Endpoint Test Suite", () => {
   /**
    * Creates a post.
    */
-  it("Creates a post", async (): Promise<void> => {
+  it("Creates a post", async () => {
     const response = await posts.createPost(
       accessToken,
       "US001 Less Voted Post",
@@ -93,62 +87,49 @@ describe("Less Voted Endpoint Test Suite", () => {
     expect(response.status).toBe(200);
   });
 
-  /**
-   * Get popular posts.
-   */
-  it("Get popular posts", async (): Promise<void> => {
-    const response = await posts.getPopularPosts();
+  it("Get less voted posts(no access token)", async () => {
+    const response = await posts.getLessVoted(null, "token");
+
     expect(response.status).toBe(200);
+    expect(response.data.posts).toBeDefined();
+    expect(response.data.posts.length).toBeGreaterThan(0);
+
+    for (const post of response.data.posts) {
+      expect(post.slug).toBeDefined();
+      expect(post.title).toBeDefined();
+      expect(post.createdAt).toBeDefined();
+      expect(post.memberPostedBy).toBeDefined();
+      expect(post.memberPostedBy.reputation).toBeDefined();
+      expect(post.memberPostedBy.user).toBeDefined();
+      expect(post.memberPostedBy.user.username).toBeDefined();
+      expect(post.numComments).toBeDefined();
+      expect(post.points).toBeDefined();
+      expect(post.text).toBeDefined();
+      expect(post.link).toBeDefined();
+      expect(post.type).toBeDefined();
+      expect(post.wasUpvotedByMe).toBeDefined();
+      expect(post.wasDownvotedByMe).toBeDefined();
+    }
+    console.log(JSON.stringify(response.data));
   });
 
-  /**
-   * Get recent posts.
-   */
-  it("Get recent posts", async (): Promise<void> => {
-    const response = await posts.getRecentPosts();
+  t("Check if posts are sorted by lesser points first", async () => {
+    const response = await posts.getLessVoted(accessToken);
+
     expect(response.status).toBe(200);
-  });
+    expect(response.data.posts).toBeDefined();
 
-  /**
-   * Get less voted.
-   */
-  /*it("Get less voted", async (): Promise<any> => {
-    const response = await posts.getLessVoted();
-    expect(response.status).toBe(200);
-  });/*
+    const postsArray = response.data.posts;
+    for (let i = 0; i < postsArray.length - 1; i++) {
+      const currentPost = postsArray[i];
+      const nextPost = postsArray[i + 1];
+      const currentPoints = new Date(currentPost.points);
+      const nextPoints = new Date(nextPost.points);
 
-  /**
-   * Get slug posts.
-   */
-  it("Get slug posts", async (): Promise<any> => {
-    // Suponha que você tenha um ID de post válido para obter o slug.
-    const postId = "seu-id-de-post";
-    const response = await posts.getPostBySlug(postId);
-    expect(response.status).toBe(200);
-
-  });
-
-
-
-  /**
-   * Upvote a post.
-   */
-  it("Upvote a post", async (): Promise<void> => {
-    // Suponha que você tenha um ID de post válido para votar.
-    const postId = "seu-id-de-post";
-    const response = await posts.upvotePost(postId, accessToken);
-    expect(response.status).toBe(200);
-    
-  });
-
-  /**
-   * Downvote a post.
-   */
-  it("Downvote a post", async (): Promise<void> => {
-    // Suponha que você tenha um ID de post válido para votar.
-    const postId = "seu-id-de-post";
-    const response = await posts.downvotePost(postId, accessToken);
-    expect(response.status).toBe(200);
-    
+      expect(currentPoints <= nextPoints).toBe(true);
+    }
   });
 });
+
+
+
