@@ -1,80 +1,79 @@
-/**
- * @startuml us001SD
- *
- * @title US 001: Sort the posts - Less-Voted
- *
- * @autonumber
- *
- * @actor User
- * @participant PostRouter
- * @participant GetLessVotedController as GetLessVotedController
- * @participant GetLessVotedRequestDTO
- * @participant GetLessVoted as UseCaseGetLessVoted
- * @participant PostRepo as PostRepository
- * @participant PostDetailsMap
- * @participant Result
- *
- * User -> PostRouter: GET ("/api/v1/posts/less-voted")
- * activate User
- * activate PostRouter
- *
- * PostRouter -> GetLessVotedController: execute(req, res)
- * activate GetLessVotedController
- *
- * GetLessVotedController -> GetLessVotedController: executeImpl(req, res)
- * activate GetLessVotedController
- *
- * GetLessVotedController -> GetLessVotedRequestDTO: Cria DTO a partir da solicitação
- * activate GetLessVotedRequestDTO
- *
- * GetLessVotedController -> GetLessVotedController: executeImpl(req, res)
- * deactivate GetLessVotedController
- *
- * GetLessVotedRequestDTO --> GetLessVotedController: Retorna o DTO
- * deactivate GetLessVotedRequestDTO
- *
- * GetLessVotedController -> GetLessVotedController: Chama UseCaseGetLessVoted.useCase
- * activate GetLessVotedController
- *
- * GetLessVotedController -> UseCaseGetLessVoted: Chama o caso de uso
- * activate UseCaseGetLessVoted
- *
- * UseCaseGetLessVoted -> PostRepo: Obtém dados da base de dados
- * activate PostRepository
- *
- * PostRepository --> UseCaseGetLessVoted: Retorna dados
- * deactivate PostRepository
- *
- * UseCaseGetLessVoted -> PostRepo: Obtém detalhes dos posts
- * activate PostRepository
- *
- * PostRepository --> UseCaseGetLessVoted: Retorna detalhes dos posts
- * deactivate PostRepository
- *
- * UseCaseGetLessVoted -> PostDetailsMap: Mapeia detalhes dos posts
- * activate PostDetailsMap
- *
- * PostDetailsMap --> Result: getValue()
- * deactivate PostDetailsMap
- *
- * Result --> PostDetailsMap: value
- * deactivate Result
- *
- * PostDetailsMap -> PostRepo: value
- * deactivate PostDetailsMap
- *
- * PostRepo -> UseCaseGetLessVoted: result.ok<GetLessVotedResponseDTO>
- * deactivate PostRepo
- *
- * UseCaseGetLessVoted --> GetLessVotedController: ok<GetLessVotedResponseDTO>
- * deactivate UseCaseGetLessVoted
- *
- * GetLessVotedController --> PostRouter: Resposta HTTP criada
- * deactivate GetLessVotedController
- *
- * PostRouter --> User: Resposta HTTP enviada
- * deactivate PostRouter
- * deactivate User
- *
- * @enduml
- */
+
+ @startuml us001SD
+ 
+ title US 001: Sort the posts - Less-Voted
+ 
+ autonumber
+ 
+ actor User
+ participant PostRouter
+ participant "getLessVotedController:\n GetLessVotedController" as GetLessVotedController
+ participant GetLessVotedRequestDTO
+ participant "usecase:GetLessVoted" as GetLessVoted
+ participant "PostRepo: PostRepo" as PostRepo
+ participant PostDetailsMap
+ participant Result
+ 
+  User -> PostRouter: GET ("/api/v1/posts/less-voted")
+  activate PostRouter
+ 
+   PostRouter -> GetLessVotedController: execute(req, res)
+   activate GetLessVotedController
+ 
+   GetLessVotedController -> GetLessVotedController: executeImpl(req, res)
+   activate GetLessVotedController
+ 
+   GetLessVotedController -> GetLessVotedRequestDTO: Cria DTO a partir da solicitação
+   activate GetLessVotedRequestDTO
+ 
+   GetLessVotedController -> GetLessVotedController: executeImpl(req, res)
+   deactivate GetLessVotedController
+ 
+   GetLessVotedRequestDTO --> GetLessVotedController: Retorna o DTO
+   deactivate GetLessVotedRequestDTO
+ 
+   GetLessVotedController -> GetLessVotedController: GetLessVoted
+   activate GetLessVotedController
+ 
+   GetLessVotedController -> GetLessVoted: Chama o caso de uso
+   activate GetLessVoted
+ 
+   GetLessVoted -> PostRepo: Obtém dados da base de dados
+   activate PostRepo
+ 
+   PostRepo --> GetLessVoted: Retorna dados
+   deactivate PostRepo
+ 
+   GetLessVoted -> PostRepo: Obtém detalhes dos posts
+   activate PostRepo
+ 
+   PostRepo --> GetLessVoted: Retorna detalhes dos posts
+   deactivate PostRepo
+ 
+   GetLessVoted -> PostDetailsMap: Mapeia detalhes dos posts
+   activate PostDetailsMap
+ 
+   PostDetailsMap --> Result: getValue()
+   deactivate PostDetailsMap
+ 
+   Result --> PostDetailsMap: value
+   deactivate Result
+ 
+   PostDetailsMap -> PostRepo: value
+   deactivate PostDetailsMap
+ 
+   PostRepo -> GetLessVoted: result.ok<GetLessVotedResponseDTO>
+   deactivate PostRepo
+ 
+   GetLessVoted --> GetLessVotedController: ok<GetLessVotedResponseDTO>
+   deactivate GetLessVoted
+ 
+   GetLessVotedController --> PostRouter: Resposta HTTP criada
+   deactivate GetLessVotedController
+ 
+   PostRouter --> User: Resposta HTTP enviada
+   deactivate PostRouter
+   deactivate User
+ 
+   @enduml
+ 

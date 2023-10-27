@@ -1,4 +1,4 @@
-# US 001 - Sort the posts
+# US 001 - Sort the posts new functionality less-voted
 
 ## 1. Requirements Engineering
 
@@ -98,6 +98,7 @@ Validations should be done in the back-end and the front-end.
 
 [Link to the commit](https://github.com/Departamento-de-Engenharia-Informatica/switch-qa-23-project-switch-qa-23-4/commit/7cb425140ada8f3f9293f6ed65d0884b51fd2840)
 
+**Bug fix date:** 2023/10/06 [Link to the commit](https://github.com/Departamento-de-Engenharia-Informatica/switch-qa-23-project-switch-qa-23-4-elainne/commit/7cb425140ada8f3f9293f6ed65d0884b51fd2840)
 =======
 
 ### 1.9. Sequence Diagram
