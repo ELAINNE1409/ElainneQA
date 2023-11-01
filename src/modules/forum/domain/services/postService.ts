@@ -63,7 +63,7 @@ export class PostService {
   }
 
   public upvoteComment (
-    post: Post, 
+    posts: Post, 
     member: Member, 
     comment: Comment, 
     existingVotesOnCommentByMember: CommentVote[]
@@ -87,7 +87,7 @@ export class PostService {
     if (downvoteAlreadyExists) {
       comment.removeVote(existingDownvote);
 
-      post.updateComment(comment);
+      posts.updateComment(comment);
 
       return right(Result.ok<void>());
     } 
@@ -103,7 +103,7 @@ export class PostService {
     const upvote: CommentVote = upvoteOrError.getValue();
     comment.addVote(upvote);
 
-    post.updateComment(comment);
+    posts.updateComment(comment);
 
     return right(Result.ok<void>()); 
   }
@@ -218,4 +218,6 @@ export class PostService {
 
     return right(Result.ok<void>());
   }
+    
+
 }

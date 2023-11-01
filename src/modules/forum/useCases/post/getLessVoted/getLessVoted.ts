@@ -1,13 +1,15 @@
-import { UseCase } from "../../../../../shared/core/useCase";
+
+import { UseCase } from "../../../../../shared/core/UseCase";
 import { GetLessVotedRequestDTO } from "./getLessVotedRequestDTO";
-import { Either, Result, left, right } from "../../../../../shared/core/result";
-import { AppError } from "../../../../../shared/core/appError";
+import { Either, Result, left, right } from "../../../../../shared/core/Result";
+import { AppError } from "../../../../../shared/core/AppError";
 import { PostDetails } from "../../../domain/postDetails";
 import { IPostRepo } from "../../../repos/postRepo";
 import { MemberId } from "../../../domain/memberId";
 import { IMemberRepo } from "../../../repos/memberRepo";
 import { PostRepo } from "../../../repos/implementations/sequelizePostRepo";
 import Post from "../../../../../shared/infra/database/sequelize/models/Post";
+import { off } from "process";
 
 /**
  * Response type for the GetLessVoted use case.

@@ -1,45 +1,43 @@
-
 import React from 'react';
-
 import '../styles/PostFilters.sass';
 
 /**
- * Represents the possible post filter types.
+ * Tipo que representa os tipos de filtros disponíveis.
  */
 export type PostFilterType = 'POPULAR' | 'LESS-VOTED' | 'NEW';
 
 /**
- * Represents the properties for a filter component.
+ * Propriedades para o componente `Filter`.
  */
 interface FilterProps {
   /**
-   * The active filter type.
-   */
-  activeFilter: PostFilterType;
-
-  /**
-   * The filter type for this component.
+   * Tipo de filtro.
    */
   filterType: PostFilterType;
 
   /**
-   * Callback function to handle click events.
+   * Função de retorno de chamada para lidar com a seleção do filtro.
    */
   onClick: (activeFilter: PostFilterType) => void;
 
   /**
-   * The text to display in the filter component.
+   * Texto exibido no filtro.
    */
   text: string;
+
+  /**
+   * Indica se o filtro está ativo.
+   */
+  activeFilter: PostFilterType;
 }
 
 /**
- * A filter component to select a specific filter.
+ * Componente funcional que representa um filtro individual.
  */
 const Filter: React.FC<FilterProps> = (props) => (
   <div
     onClick={() => props.onClick(props.filterType)}
-    className={`postFilter ${
+    className={`post-filter ${
       props.activeFilter === props.filterType ? 'active' : ''
     }`}
   >
@@ -48,35 +46,36 @@ const Filter: React.FC<FilterProps> = (props) => (
 );
 
 /**
- * Represents the properties for the PostFilters component.
+ * Propriedades para o componente `PostFilters`.
  */
 interface PostFilterProps {
   /**
-   * The active filter type.
+   * Tipo de filtro ativo.
    */
   activeFilter: PostFilterType;
 
   /**
-   * Callback function to handle filter selection.
+   * Função de retorno de chamada para lidar com a seleção do filtro.
    */
   onClick: (activeFilter: PostFilterType) => void;
 }
 
 /**
- * A component to display and select post filters.
+ * Componente funcional que agrupa os filtros.
  */
 const PostFilters: React.FC<PostFilterProps> = (props) => (
-  <div className="postFilters">
+  <div className="post-filters">
     <Filter
       activeFilter={props.activeFilter}
       filterType={'POPULAR'}
       text="Popular"
       onClick={props.onClick}
     />
+
     <Filter
       activeFilter={props.activeFilter}
       filterType={'LESS-VOTED'}
-      text="Less-Voted"
+      text="Lessvoted"
       onClick={props.onClick}
     />
 

@@ -1,50 +1,92 @@
-# US 012 - Delete User
-
+# US 012: Delete a user
 
 # 1. Tests
 
-> **Test 1:** Verify that a user can delete their own account - AC1, AC2, AC3, AC4, AC5.
+> **Test 1:** Check that it is not possible to comment on a post when not logged in. - AC1.
 
 **Description:**
 
-As a user of the system, I want to be able to delete my own account.
+The user must be authenticated to comment on a post.
 
-**Precoditions:**
+**Preconditions:**
 
-1. The user is logged into their own account in the system.
-2. The user has no posts, comments, or votes.
-3. The user is the owner of the account they wish to delete.
+1.
+2.
 
-**Test Steps:**
+**Test steps:**
 
-1. Access the account settings or profile section of the system.
-2. Find the option to delete my account.
-3. Click on the "Delete User" option.
-4. Confirm the deletion when prompted.
+1.
 
 **Expected result:**
 
-- The user's own account is permanently removed from the system.
-- All data associated with the user's account is also deleted.
-- A confirmation message is displayed, indicating the successful deletion of the user's own account.
+-
 
-> **Test 2:** Verify that a user with posts, comments, or votes cannot delete their account - AC1, AC2.
+> **Test 2:** Check that it is not possible to submit a comment when requested data is not filled in. - AC2, AC5
 
 **Description:**
+The comment field must be filled in. An empty comment (0 characters) must be considered invalid.
 
-A user with posts, comments, or votes should not be able to delete their account.
+**Preconditions:**
 
-**Precoditions:**
+1. The user must be logged in.
+2. There is at least an existing post in the forum.
 
-1. The user is logged into their own account in the system.
-2. The user has one or more posts, comments, or votes.
+**Test steps:**
 
-**Test Steps:**
-
-1. Acess the account settings or profile section of the system.
-2. Look for the option to delete my account.
+1. Click on the post. After that, the post details must be displayed.
+2. Leave the comment box empty.
+3. Click on "Post comment" option.
 
 **Expected result:**
 
-- The user does not see the "Delete My Account" option in their account settings.
-- The user is informed that they cannot delete their account due to having posts, comments, or votes.
+- Red pop-up notification: "Yeahhhhh, comments should be 20 to 10000 characters. Yours was 0. (cowboyhatface)"
+- The comment is not posted.
+
+> **Test 3:** Check that a comment with less than 20 characters is considered invalid - AC2, AC5.
+
+**Description:**
+A valid comment must have between 20 and 10000 characters. So, a comment with less than 20 characters mustn't be accepted.
+
+**Preconditions:**
+
+1. The user must be logged in.
+2. There is at least an existing post in the forum.
+
+**Input:**
+
+- Comment (less than 20 characters)
+
+**Test steps:**
+
+1. Click on the post. After that, the post details must be displayed.
+2. Fill in the comment box.
+3. Click on "Post comment" option.
+
+**Expected result:**
+
+- Red pop-up notification: "Yeahhhhh, comments should be 20 to 10000 characters. Yours was "X". (cowboyhatface)"
+- The comment is not posted.
+
+> **Test 4:** Check that a comment with more than 20 and less than 10000 characters is considered valid. - AC2, AC4
+
+**Description:**
+A valid comment must have between 20 and 10000 characters. So, a comment with between 20 and 10000 characters must be accepted.
+
+**Preconditions:**
+
+1. The user must be logged in.
+2. There is at least an existing post in the forum.
+
+**Input:**
+.\* Comment (between 20 and 10000 characters)
+
+**Test steps:**
+
+1. Click on the post. After that, the post details must be displayed.
+2. Fill in the comment box.
+3. Click on "Post comment" option.
+
+**Expected result:**
+
+- Green pop-up notification: "Done-zo! (cowboyhatface)"
+- The post must become visible in the comments section of the post.

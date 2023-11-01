@@ -5,7 +5,6 @@ import { GraphQLDateTime } from 'graphql-iso-date';
 import { memberRepo } from '../../../../modules/forum/repos'
 import { MemberDetailsMap } from '../../../../modules/forum/mappers/memberDetailsMap'
 import { ApolloServer, gql } from 'apollo-server-express';
-
 import { typeDefs as ForumTypeDefs }  from './forum'
 import { typeDefs as UserTypeDefs } from './users'
 

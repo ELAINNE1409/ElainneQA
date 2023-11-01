@@ -1,4 +1,3 @@
-
 import { GetPopularPosts } from "./GetPopularPosts";
 import { postRepo } from "../../../repos";
 import { GetPopularPostsController } from "./GetPopularPostsController";

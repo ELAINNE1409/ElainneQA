@@ -9,10 +9,7 @@ import { DateUtil } from '../shared/utils/DateUtil';
 import { PostRow } from '../modules/forum/components/posts/postRow';
 import { ProfileButton } from '../modules/users/components/profileButton';
 import { UsersState } from '../modules/users/redux/states';
-
-/**
- * @ignore
- */
+//@ts-ignore
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as usersOperators from '../modules/users/redux/operators';
@@ -22,7 +19,9 @@ import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 import { ForumState } from '../modules/forum/redux/states';
 import withVoting from '../modules/forum/hocs/withVoting';
 
-interface IndexPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
+interface IndexPageProps
+  extends usersOperators.IUserOperators,
+    forumOperators.IForumOperations {
   users: UsersState;
   forum: ForumState;
   location: any;
@@ -43,10 +42,6 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
 
   onClickJoinButton() {}
 
-  /**
-   * Sets the active filter.
-   * @param filter - The filter to set.
-   */
   setActiveFilter(filter: PostFilterType) {
     this.setState({
       ...this.state,
@@ -54,25 +49,20 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
     });
   }
 
-  /**
-   * Gets posts based on the active filter.
-   */
   getPosts() {
     const activeFilter = this.state.activeFilter;
-
+    console.log("activeFilter", activeFilter)
     if (activeFilter === 'NEW') {
+      console.log("NEW")
       this.props.getRecentPosts();
     } else if (activeFilter === 'LESS-VOTED') {
-      this.props.getLessVoted();
+      console.log("getLessVoted")
+      this.props.getRecentPosts();
     } else {
       this.props.getPopularPosts();
     }
   }
 
-  /**
-   * Handles the filter change.
-   * @param prevState - The previous state.
-   */
   onFilterChanged(prevState: IndexPageState) {
     const currentState: IndexPageState = this.state;
     if (prevState.activeFilter !== currentState.activeFilter) {
@@ -80,12 +70,13 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
     }
   }
 
-  /**
-   * Sets the active filter on page load.
-   */
   setActiveFilterOnLoad() {
-    const showNewFilter = (this.props.location.search as string).includes('show=new');
-    const showPopularFilter = (this.props.location.search as string).includes('show=popular');
+    const showNewFilter = (this.props.location.search as string).includes(
+      'show=new'
+    );
+    const showPopularFilter = (this.props.location.search as string).includes(
+      'show=popular'
+    );
 
     let activeFilter = this.state.activeFilter;
 
@@ -99,15 +90,15 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
     });
   }
 
-  /**
-   * Gets posts from the active filter group.
-   * @returns An array of Post objects.
-   */
   getPostsFromActiveFilterGroup(): Post[] {
+    console.log(this.state.activeFilter)
     if (this.state.activeFilter === 'NEW') {
       return this.props.forum.recentPosts;
+    } else if (this.state.activeFilter === 'LESS-VOTED')  {
+    console.log("lessVoted")
+      return this.props.forum.lessVoted
     } else {
-      return this.props.forum.popularPosts;
+      return  this.props.forum.popularPosts;
     }
   }
 
@@ -125,10 +116,10 @@ class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
     const { activeFilter } = this.state;
     return (
       <Layout>
-        <div className="headerContainer flex flexRow flexCenter flexEven">
+        <div className="header-container flex flex-row flex-center flex-even">
           <Header
-            title="DomainDrivenDesigners"
-            subtitle="Where awesome DomainDriven Designers are made"
+            title="Domain-Driven Designers"
+            subtitle="Where awesome Domain-Driven Designers are made"
           />
           <ProfileButton
             isLoggedIn={this.props.users.isAuthenticated}

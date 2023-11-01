@@ -10,19 +10,19 @@ As a visitor, I want to register on the forum website.
 
 ## US 003: Create a post
 
-As a user, I want to submit posts. 
+As a user, I want to submit posts.
 
 ## US 004: Vote on a post
 
-As a user, I want to vote on the forum posts. 
+As a user, I want to vote on the forum posts.
 
 ## US 005: Vote on a comment
 
-As a user, I want to vote on the comment posts. 
+As a user, I want to vote on the comment posts.
 
 ## US 006: Comment on a post
 
-As a user, I want to be able to comment on posts. 
+As a user, I want to be able to comment on posts.
 
 ## US 007: Reply to a comment
 
@@ -30,9 +30,9 @@ As a user, I want to be able to reply to a comment.
 
 ## US 008: View post
 
-As a visitor, I want to view the post details. 
+As a visitor, I want to view the post details.
 
-## US 009: Check account details 
+## US 009: Check account details
 
 As a visitor, I want to have access to all the account details.
 
@@ -43,3 +43,11 @@ As a user, I want to authenticate so that I can use all the forum features.
 ## US 011: Perform a logout
 
 As a user, I want to be able to logout of the forum website.
+
+## US 012: Delete a user
+
+As a user, I want to be able to delete my account.
+
+## US 013: Check personal account details
+
+As a user, I want to view my personal account details.

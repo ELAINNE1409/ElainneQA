@@ -5,7 +5,7 @@ export interface Post {
   slug: string;
   title: string;
   createdAt: string | Date;
-  postAuthor: string;
+  postAuthor: string | undefined;
   numComments: number;
   points: number;
   type: PostType;

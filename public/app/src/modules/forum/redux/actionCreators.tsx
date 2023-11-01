@@ -124,6 +124,27 @@ function getPopularPostsFailure (error: string): ForumAction & { error: string }
   };
 }
 
+function getLessVoted (): ForumAction {
+  return {
+    type: actions.GETTING_LESS_VOTED
+  };
+}
+
+function getLessVotedSuccess (posts: Post[]): ForumAction {
+  return {
+    type: actions.GETTING_LESS_VOTED_SUCCESS,
+    posts
+  };
+}
+
+function getLessVotedFailure (error: string): ForumAction & { error: string } {
+  return {
+    type: actions.GETTING_LESS_VOTED_FAILURE,
+    error
+  };
+}
+
+
 function gettingCommentByCommentId (): ForumAction {
   return {
     type: actions.GETTING_COMMENT_BY_COMMENT_ID
@@ -267,6 +288,11 @@ export {
   getPopularPosts,
   getPopularPostsSuccess,
   getPopularPostsFailure,
+
+ getLessVoted,
+ getLessVotedSuccess,
+ getLessVotedFailure,
+
 
   gettingCommentByCommentId,
   gettingCommentByCommentIdSuccess,

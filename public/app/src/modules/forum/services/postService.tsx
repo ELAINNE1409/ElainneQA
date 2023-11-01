@@ -16,10 +16,10 @@ export interface IPostService {
   ): Promise<APIResponse<void>>;
   getRecentPosts(offset?: number): Promise<APIResponse<Post[]>>;
   getPopularPosts(offset?: number): Promise<APIResponse<Post[]>>;
-  getPostBySlug(slug: string): Promise<APIResponse<Post>>;
+  getLessVoted(offset?: number): Promise<APIResponse<Post[]>>;
+  getPostBySlug(slug: string): Promise<APIResponse<Post>>; 
   upvotePost(slug: string): Promise<APIResponse<void>>;
   downvotePost(slug: string): Promise<APIResponse<void>>;
-  getPostAscending(): Promise<APIResponse<Post[]>>;
 }
 
 export class PostService extends BaseAPI implements IPostService {
@@ -100,6 +100,42 @@ export class PostService extends BaseAPI implements IPostService {
     }
   }
 
+  public async getLessVoted(offset?: number): Promise<APIResponse<Post[]>> {
+    console.log('getLessVoted');
+    try {
+      const accessToken = this.authService.getToken('access-token');
+      const isAuthenticated = !!accessToken === true;
+      const auth = {
+        authorization: accessToken,
+      };
+   
+      const response = await this.get(
+        '/posts',
+        { offset },
+        isAuthenticated ? auth : null
+      );
+   
+      const sortedPosts = response.data.posts
+        .map((p: PostDTO) => PostUtil.toViewModel(p))
+        .sort((postA: Post, postB: Post) => {
+          // Sort by votes in ascending order
+          if (postA.points < postB.points) return -1;
+          if (postA.points > postB.points) return 1;
+   
+          // In case of a tie in votes, sort by createdAt in descending order
+          if (postA.createdAt < postB.createdAt) return 1;
+          if (postA.createdAt > postB.createdAt) return -1;
+   
+          return 0;
+        });
+        console.log("console",response.data.posts);
+      return right(Result.ok<Post[]>(sortedPosts));
+    } catch (err) {
+      return left(
+        err.response ? err.response.data.message : 'Connection failed'
+      );
+    }
+  }
   public async createPost(
     title: string,
     type: PostType,
@@ -143,31 +179,4 @@ export class PostService extends BaseAPI implements IPostService {
       );
     }
   }
-  public async getPostAscending(): Promise<APIResponse<Post[]>> {
-    try {
-      const accessToken = this.authService.getToken('access-token');
-
-      const isAuthenticated = !!accessToken === true;
-
-      const auth = {
-        authorization: accessToken
-      };
-
-      const response = await this.get(
-        '/posts',
-
-        isAuthenticated ? auth : null
-      );
-
-      const sortedPosts = response.data.posts
-        .map((p: PostDTO) => PostUtil.toViewModel(p))
-        .sort((a: Post, b: Post) => a.points - b.points);
-
-      return right(Result.ok<Post[]>(sortedPosts));
-    } catch (err) {
-      return left(
-        err.response ? err.response.data.message : 'Connection failed'
-      );
-    }
-  }
-};
+}

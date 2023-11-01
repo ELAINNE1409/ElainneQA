@@ -1,0 +1,21 @@
+@startuml us013-SSD
+
+title US013: Check personal account details - System Sequence Diagram
+
+autonumber
+
+actor Visitor as "Visitor"
+participant "DDD Forum Website" as System
+skinparam actor {
+BackgroundColor transparent
+}
+
+activate Visitor
+Visitor -> System: access personal account details
+
+activate System
+    System --> Visitor: displays personal account details
+deactivate System
+
+deactivate Visitor
+@enduml

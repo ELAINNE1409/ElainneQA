@@ -11,11 +11,8 @@ participant "deleteUserController: \n deleteUserController" as DeleteUserControl
 participant "useCase:DeleteUserCase" as DeleteUserCase
 participant "userRepo:IUserRepo" as UserRepo
 participant "user : User" as user
-
-
 User-> userRouter: delete ("/api/v1/user/:id")
 activate userRouter
-
 userRouter -> DeleteUserController: execute(req, res)
 DeleteUserController -> DeleteUserController: executeImpl(req,res)
 DeleteUserController -> DeleteUserCase : execute(dto)

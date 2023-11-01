@@ -124,6 +124,25 @@ export default function forum (state: ForumState = states,
         ...ReduxUtils.reportEventStatus("isGettingPopularPosts", false),
         error: action.error
       };
+    
+    case actions.GETTING_LESS_VOTED:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingLessVoted"),
+        error: ''
+      };
+    case actions.GETTING_LESS_VOTED_SUCCESS:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingLessVoted", true),
+        lessVoted: action.posts,
+      };
+    case actions.GETTING_LESS_VOTED_FAILURE:
+      return {
+        ...state,
+        ...ReduxUtils.reportEventStatus("isGettingLessVoted", false),
+        error: action.error
+      };
 
 
     case actions.GETTING_COMMENT_BY_COMMENT_ID:

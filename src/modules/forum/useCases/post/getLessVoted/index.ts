@@ -1,5 +1,5 @@
 import { GetLessVoted } from "./getLessVoted";
-import { postRepo } from "./../../repos";
+import { postRepo } from "../../../repos";
 import { GetLessVotedController } from "./getLessVotedController";
 
 
