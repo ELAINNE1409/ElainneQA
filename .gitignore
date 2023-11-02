@@ -8,3 +8,4 @@ src\api_test\config\postsConstants.ts
 .netlify
 /dist
 test-report.html
++ docs/typedoc

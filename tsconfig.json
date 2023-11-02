@@ -15,14 +15,11 @@
     "emitDecoratorMetadata": true,
     "esModuleInterop": true
   },
-  "include": [
-    "src/*.ts",
-    "src/**/*.ts",
-    "src/**/*.js"
-  ],
-  "exclude": [
-    "node_modules",
-    "src/**/*.spec.ts",
-    "src/**/*.spec.js"
-  ]
+  "typedocOptions": {
+    "entryPoints": ["./src"],
+    "out": "docs/doc",
+    "readme": "none"
+  },
+  "include": ["src/*.ts", "src/**/*.ts", "src/**/*.js"],
+  "exclude": ["node_modules", "src/**/*.spec.ts", "src/**/*.spec.js"]
 }
